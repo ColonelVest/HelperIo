@@ -11,6 +11,7 @@ import {SplashScreen} from '@ionic-native/splash-screen';
 import {ReceiptScannerPage} from "../pages/receipt-scanner/receipt-scanner";
 import {QRScanner} from "@ionic-native/qr-scanner";
 import {ReceiptDetailsPage} from "../pages/receipt-details/receipt-details";
+import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
     declarations: [
@@ -23,6 +24,7 @@ import {ReceiptDetailsPage} from "../pages/receipt-details/receipt-details";
     imports: [
         BrowserModule,
         IonicModule.forRoot(MyApp),
+        HttpClientModule
     ],
     bootstrap: [IonicApp],
     entryComponents: [
@@ -36,7 +38,7 @@ import {ReceiptDetailsPage} from "../pages/receipt-details/receipt-details";
         StatusBar,
         SplashScreen,
         {provide: ErrorHandler, useClass: IonicErrorHandler},
-        QRScanner
+        QRScanner,
     ]
 })
 export class AppModule {
