@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
 import {QRScanner, QRScannerStatus} from "@ionic-native/qr-scanner";
 import {ReceiptDetailsPage} from "../receipt-details/receipt-details";
+import {ApiProvider} from "../../providers/api";
 
 @IonicPage()
 @Component({
@@ -11,16 +12,20 @@ import {ReceiptDetailsPage} from "../receipt-details/receipt-details";
 export class ReceiptScannerPage {
     scanSub;
 
-    constructor(public navCtrl: NavController, public navParams: NavParams, private qrScanner: QRScanner, private alrt: AlertController) {
+    constructor(
+        public navCtrl: NavController,
+        public navParams: NavParams,
+        private qrScanner: QRScanner,
+        private alrt: AlertController,
+        private api: ApiProvider
+    ) {
     }
 
     ionViewWillEnter(){
         this.showCamera();
         this.scan();
-        this.navCtrl.push(ReceiptDetailsPage, {
-            result: 't=20180610T181900&s=373.64&fn=9286000100140352&i=14545&fp=3820066270&n=1'
-        });
     }
+
     ionViewWillLeave(){
         this.hideCamera();
     }
@@ -34,9 +39,7 @@ export class ReceiptScannerPage {
                         this.scanSub = this.qrScanner.scan().subscribe((text: string) => {
                             this.qrScanner.hide();
                             this.scanSub.unsubscribe();
-                            this.navCtrl.push(ReceiptDetailsPage, {
-                                result: text
-                            });
+                            this.sendQrResult(text);
                         },
                             error => {
                                 const  alert = this.alrt.create({
@@ -64,6 +67,16 @@ export class ReceiptScannerPage {
             });
             alert.present();
         }
+    }
+
+    sendQrResult(qrText) {
+        return this.api.createReceiptByQrText(qrText).subscribe(
+            res => {
+                this.navCtrl.push(ReceiptDetailsPage, {
+                    receipt: res['data']
+                });
+            }
+        );
     }
 
     showCamera() {

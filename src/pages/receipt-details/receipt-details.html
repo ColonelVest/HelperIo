@@ -9,7 +9,19 @@
 <ion-content padding>
     <div *ngIf="receipt">
         <ion-list>
-            <button ion-item *ngFor="let item of receipt['data']['items']" (click)="itemTapped($event, item)">
+            <ion-list-header>
+                Подробности
+            </ion-list-header>
+            <ion-item *ngFor="let detail of getReceiptDetails()">
+                {{detail.title}}
+                <div class="item-note" item-end>
+                    {{detail.data}}
+                </div>
+            </ion-item>
+            <ion-list-header>
+                Товары
+            </ion-list-header>
+            <button ion-item *ngFor="let item of receipt['items']" (click)="itemTapped($event, item)">
                 <!--<ion-icon [name]="item.icon" item-start></ion-icon>-->
                 {{item.title}}
                 <div class="item-note" item-end>

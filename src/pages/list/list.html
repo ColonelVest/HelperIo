@@ -8,16 +8,15 @@
 </ion-header>
 
 <ion-content>
-  <ion-list>
-    <button ion-item *ngFor="let item of items" (click)="itemTapped($event, item)">
-      <ion-icon [name]="item.icon" item-start></ion-icon>
-      {{item.title}}
+  <ion-list *ngIf="receipts">
+    <button ion-item *ngFor="let receipt of receipts" (click)="itemTapped($event, receipt)">
+      {{receipt.dateTime}}
       <div class="item-note" item-end>
-        {{item.note}}
+        {{receipt.totalSum}}р.
       </div>
     </button>
   </ion-list>
-  <div *ngIf="selectedItem" padding>
-    You navigated here from <b>{{selectedItem.title}}</b>
-  </div>
+  <!--<div *ngIf="selectedReceipt" padding>-->
+    <!--You navigated here from <b>{{selectedReceipt.title}}</b>-->
+  <!--</div>-->
 </ion-content>

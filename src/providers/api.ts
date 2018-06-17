@@ -49,4 +49,11 @@ export class ApiProvider {
 
         return body;
     }
+
+    getReceipts() {
+        let url = ApiProvider.BASE_URL + 'receipts';
+        url = this.addTokenToRequest(url, false);
+
+        return this.http.get(url);
+    }
 }

@@ -8,19 +8,10 @@ import {ApiProvider} from "../../providers/api";
     templateUrl: 'receipt-details.html',
 })
 export class ReceiptDetailsPage {
-    qrText;
     receipt;
 
     constructor(public navCtrl: NavController, public navParams: NavParams, public api: ApiProvider) {
-        this.qrText = navParams.get('result');
-    }
-
-    sendQrResult() {
-        return this.api.createReceiptByQrText(this.qrText).subscribe(
-            res => {
-                this.receipt = res
-            }
-        );
+        this.receipt = navParams.get('receipt');
     }
 
     itemTapped($event, item) {
@@ -32,6 +23,16 @@ export class ReceiptDetailsPage {
     }
 
     ionViewDidLoad() {
-        this.sendQrResult();
+        console.log(this.receipt);
+    }
+
+    getReceiptDetails() {
+        return [
+            {title: 'Дата и время покупки', data: this.receipt.dateTime},
+            {title: 'Название магазина', data: this.receipt.storeName ? this.receipt.storeName : 'Не указан'},
+            {title: 'Адрес магазина', data: this.receipt.storeAddress ? this.receipt.storeAddress : 'Не указан'},
+            {title: 'Кассир', data: this.receipt.cashier ? this.receipt.cashier : 'Не указан'}
+        ];
+
     }
 }
