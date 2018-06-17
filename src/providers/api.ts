@@ -56,4 +56,28 @@ export class ApiProvider {
 
         return this.http.get(url);
     }
+
+    getItems() {
+        let url = ApiProvider.BASE_URL + 'items';
+        url = this.addTokenToRequest(url, false);
+
+        return this.http.get(url);
+    }
+
+    puBuyItem(item) {
+        const editedBuyItem = JSON.parse(JSON.stringify(item));
+        editedBuyItem.item = editedBuyItem.item.id;
+        const url = `${ApiProvider.BASE_URL + 'buyitems'}/${item.id}`;
+
+        return this.put(editedBuyItem, url, 'buyitem');
+    }
+
+    protected put(entity, url, entityName) {
+        let result = this.addTokenToObject(entity, entityName);
+        let body = JSON.stringify(result);
+
+        let headers = new HttpHeaders({'Content-Type': 'application/json'});
+
+        return this.http.put(url, body, {headers});
+    }
 }

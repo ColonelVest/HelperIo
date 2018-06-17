@@ -15,6 +15,7 @@ import {ReceiptScannerPageModule} from "../pages/receipt-scanner/receipt-scanner
 import {LoginPageModule} from "../pages/login/login.module";
 import {IonicStorageModule} from "@ionic/storage";
 import { ApiProvider } from '../providers/api';
+import {ItemsListPageModule} from "../pages/items-list/items-list.module";
 
 @NgModule({
     declarations: [
@@ -29,7 +30,8 @@ import { ApiProvider } from '../providers/api';
         ReceiptDetailsPageModule,
         ReceiptScannerPageModule,
         LoginPageModule,
-        IonicStorageModule.forRoot()
+        IonicStorageModule.forRoot(),
+        ItemsListPageModule
     ],
     bootstrap: [IonicApp],
     entryComponents: [

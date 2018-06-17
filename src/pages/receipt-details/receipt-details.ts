@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
-import {IonicPage, NavController, NavParams} from 'ionic-angular';
+import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
 import {ApiProvider} from "../../providers/api";
+import {ItemsListPage} from "../items-list/items-list";
 
 @IonicPage()
 @Component({
@@ -9,8 +10,9 @@ import {ApiProvider} from "../../providers/api";
 })
 export class ReceiptDetailsPage {
     receipt;
+    items =  [{title: 'asdfasdf', id: 12}, {title: 'awergfds', id: 12}];
 
-    constructor(public navCtrl: NavController, public navParams: NavParams, public api: ApiProvider) {
+    constructor(public navCtrl: NavController, public navParams: NavParams, public api: ApiProvider, private modalCtrl: ModalController) {
         this.receipt = navParams.get('receipt');
     }
 
@@ -33,6 +35,20 @@ export class ReceiptDetailsPage {
             {title: 'Адрес магазина', data: this.receipt.storeAddress ? this.receipt.storeAddress : 'Не указан'},
             {title: 'Кассир', data: this.receipt.cashier ? this.receipt.cashier : 'Не указан'}
         ];
+    }
 
+    onChangeItemClick(item) {
+        let profileModal = this.modalCtrl.create(ItemsListPage);
+        profileModal.onDidDismiss(data => {
+            if (data) {
+                item.item = data['item'];
+                this.api.puBuyItem(item).subscribe(
+                    res => {
+                        console.log(res);
+                    }
+                );
+            }
+        });
+        profileModal.present();
     }
 }

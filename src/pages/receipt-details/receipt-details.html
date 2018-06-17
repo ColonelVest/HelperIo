@@ -13,21 +13,21 @@
                 Подробности
             </ion-list-header>
             <ion-item *ngFor="let detail of getReceiptDetails()">
-                {{detail.title}}
-                <div class="item-note" item-end>
-                    {{detail.data}}
-                </div>
+                <h2>{{detail.title}}</h2>
+                <p>{{detail.data}}</p>
             </ion-item>
             <ion-list-header>
                 Товары
             </ion-list-header>
-            <button ion-item *ngFor="let item of receipt['items']" (click)="itemTapped($event, item)">
-                <!--<ion-icon [name]="item.icon" item-start></ion-icon>-->
-                {{item.title}}
-                <div class="item-note" item-end>
-                    {{item.quantity}}
-                </div>
-            </button>
+            <ion-item *ngFor="let item of receipt['items']">
+                <!--<ion-thumbnail item-start>-->
+                <!--<img src="img/thumbnail-totoro.png">-->
+                <!--</ion-thumbnail>-->
+                <h2>{{item.title}}</h2>
+                <p>{{item.quantity}} <span *ngIf="item.item">{{item.item.dimension}}</span></p>
+                <p *ngIf="item.item">{{item.item.title}}</p>
+                <button ion-button clear item-end (click)="onChangeItemClick(item)">Изменить</button>
+            </ion-item>
         </ion-list>
     </div>
 </ion-content>
