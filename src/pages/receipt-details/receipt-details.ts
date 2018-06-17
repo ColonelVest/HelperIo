@@ -1,13 +1,6 @@
 import {Component} from '@angular/core';
 import {IonicPage, NavController, NavParams} from 'ionic-angular';
-import {HttpClient} from "@angular/common/http";
-
-/**
- * Generated class for the ReceiptDetailsPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import {ApiProvider} from "../../providers/api";
 
 @IonicPage()
 @Component({
@@ -17,12 +10,13 @@ import {HttpClient} from "@angular/common/http";
 export class ReceiptDetailsPage {
     qrText;
     receipt;
-    constructor(public navCtrl: NavController, public navParams: NavParams, private http: HttpClient) {
+
+    constructor(public navCtrl: NavController, public navParams: NavParams, public api: ApiProvider) {
         this.qrText = navParams.get('result');
     }
 
     sendQrResult() {
-        return this.http.get('https://api.twto.ru/web/api/v1/create_by_qr_text?token=angry|$2y$13$KMcXxcgw/dSEx0oyXPD6JO37BGHDArSJ5mtq2O4G1ZaD/HtOHAXrK&' + this.qrText).subscribe(
+        return this.api.createReceiptByQrText(this.qrText).subscribe(
             res => {
                 this.receipt = res
             }

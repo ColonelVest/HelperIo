@@ -8,37 +8,41 @@ import {ListPage} from '../pages/list/list';
 
 import {StatusBar} from '@ionic-native/status-bar';
 import {SplashScreen} from '@ionic-native/splash-screen';
-import {ReceiptScannerPage} from "../pages/receipt-scanner/receipt-scanner";
 import {QRScanner} from "@ionic-native/qr-scanner";
-import {ReceiptDetailsPage} from "../pages/receipt-details/receipt-details";
 import {HttpClientModule} from "@angular/common/http";
+import {ReceiptDetailsPageModule} from "../pages/receipt-details/receipt-details.module";
+import {ReceiptScannerPageModule} from "../pages/receipt-scanner/receipt-scanner.module";
+import {LoginPageModule} from "../pages/login/login.module";
+import {IonicStorageModule} from "@ionic/storage";
+import { ApiProvider } from '../providers/api';
 
 @NgModule({
     declarations: [
         MyApp,
         HomePage,
         ListPage,
-        ReceiptScannerPage,
-        ReceiptDetailsPage
     ],
     imports: [
         BrowserModule,
         IonicModule.forRoot(MyApp),
-        HttpClientModule
+        HttpClientModule,
+        ReceiptDetailsPageModule,
+        ReceiptScannerPageModule,
+        LoginPageModule,
+        IonicStorageModule.forRoot()
     ],
     bootstrap: [IonicApp],
     entryComponents: [
         MyApp,
         HomePage,
         ListPage,
-        ReceiptScannerPage,
-        ReceiptDetailsPage
     ],
     providers: [
         StatusBar,
         SplashScreen,
         {provide: ErrorHandler, useClass: IonicErrorHandler},
         QRScanner,
+        ApiProvider,
     ]
 })
 export class AppModule {
