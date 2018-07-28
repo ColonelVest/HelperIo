@@ -1,8 +1,7 @@
 import {Component} from '@angular/core';
 import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
 import {QRScanner, QRScannerStatus} from "@ionic-native/qr-scanner";
-import {ReceiptDetailsPage} from "../receipt-details/receipt-details";
-import {ApiProvider} from "../../providers/api";
+import {ReceiptPreviewPage} from "../receipt-preview/receipt-preview";
 
 @IonicPage()
 @Component({
@@ -17,16 +16,15 @@ export class ReceiptScannerPage {
         public navParams: NavParams,
         private qrScanner: QRScanner,
         private alrt: AlertController,
-        private api: ApiProvider
     ) {
     }
 
-    ionViewWillEnter(){
+    ionViewWillEnter() {
         this.showCamera();
         this.scan();
     }
 
-    ionViewWillLeave(){
+    ionViewWillLeave() {
         this.hideCamera();
     }
 
@@ -36,13 +34,15 @@ export class ReceiptScannerPage {
                 .then((status: QRScannerStatus) => {
                     if (status.authorized) {
                         console.log('Camera Permission Given');
-                        this.scanSub = this.qrScanner.scan().subscribe((text: string) => {
-                            this.qrScanner.hide();
-                            this.scanSub.unsubscribe();
-                            this.sendQrResult(text);
-                        },
+                        this.scanSub = this.qrScanner.scan().subscribe((text) => {
+                                this.qrScanner.hide();
+                                this.scanSub.unsubscribe();
+                                this.navCtrl.push(ReceiptPreviewPage, {
+                                    qrText: text['result'] ? text['result'] : text
+                                });
+                            },
                             error => {
-                                const  alert = this.alrt.create({
+                                const alert = this.alrt.create({
                                     title: 'ошибка',
                                     subTitle: 'ошибка запроса',
                                     buttons: ['OK']
@@ -60,23 +60,13 @@ export class ReceiptScannerPage {
                 })
                 .catch((e: any) => console.log('Error is', e))
         } catch (e) {
-            const  alert = this.alrt.create({
+            const alert = this.alrt.create({
                 title: 'ошибка',
                 subTitle: e.message,
                 buttons: ['OK']
             });
             alert.present();
         }
-    }
-
-    sendQrResult(qrText) {
-        return this.api.createReceiptByQrText(qrText).subscribe(
-            res => {
-                this.navCtrl.push(ReceiptDetailsPage, {
-                    receipt: res['data']
-                });
-            }
-        );
     }
 
     showCamera() {

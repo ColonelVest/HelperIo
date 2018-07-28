@@ -1,0 +1,27 @@
+<!--
+  Generated template for the ReceiptPreviewPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+    <ion-navbar>
+        <ion-title></ion-title>
+    </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+    <ion-list *ngIf="qrText">
+        <ion-list-header>
+            Детали
+        </ion-list-header>
+        <ion-item *ngFor="let detail of getReceiptDetails()">
+            <h2>{{detail.title}}</h2>
+            <p>{{detail.value}}</p>
+        </ion-item>
+    </ion-list>
+    <button ion-button (click)="saveReceipt()">Сохранить чек и получить детали</button>
+</ion-content>
